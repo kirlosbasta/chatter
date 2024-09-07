@@ -1,0 +1,11 @@
+* {
+  margin: 0;
+}
+
+.app {
+  background-color: '#ddd4dd';
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
