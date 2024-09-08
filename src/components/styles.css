@@ -22,6 +22,7 @@
   padding: 10px 5px;
   margin: 10px;
   border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 /* ============================ Side Bar Search ========================= */
@@ -32,6 +33,7 @@
   border-radius: 20px;
   display: flex;
   align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .search-box {
@@ -51,6 +53,7 @@
   flex: 1;
   overflow: scroll;
   scrollbar-width: none;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .sb-conversations::-webkit-scrollbar {
@@ -124,6 +127,7 @@
   padding: 10px 10px;
   margin: 10px;
   border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .header-text {
@@ -143,6 +147,7 @@
   overflow: scroll;
   scrollbar-width: none;
   font-size: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .messages-container::-webkit-scrollbar {
@@ -177,7 +182,7 @@
 .message-box {
   display: flex;
   flex-direction: column;
-  background-color: #63d7b8;
+  background-color: #1976d2;
   width: max-content;
   padding: 10px 10px;
   margin: 5px;
@@ -200,4 +205,126 @@
   border-radius: 20px;
   display: flex;
   justify-content: space-between;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* ================================== Welcome Container ======================== */
+.welcome-container {
+  flex: 0.7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  column-gap: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: rgba(0, 0, 0, 0.54);
+  border-bottom: 5px solid #1976d2;
+  border-radius: 20px;
+}
+
+.welcome-logo {
+  height: 20vw;
+  margin-bottom: 20px;
+}
+
+/* ==================================== Create group container ===================== */
+.createGroup-container {
+  flex: 0.7;
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+  background-color: white;
+  border-radius: 20px;
+  margin: 10px;
+  padding: 20px 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* =================================== Login ========================================= */
+.login-container {
+  display: flex;
+  height: 90vh;
+  width: 90vw;
+  background-color: #d4d5d8;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.image-container {
+  flex: 0.3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  flex: 0.7;
+  background-color: white;
+  border-radius: 20px;
+  margin: 10px;
+  color: #1976d2;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bolder;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* ====================================== Online user and groups ========================== */
+.list-container {
+  flex: 0.7;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================== list users and groups header ================================= */
+.ug-header {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  padding: 15px 5px;
+  margin: 10px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.ug-title {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bolder;
+  font-size: 1.5rem;
+  margin-left: 10px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+/* ============================== List users and groups item =============================== */
+.ug-list {
+  flex: 1;
+  overflow: scroll;
+  scrollbar-width: none;
+  padding: 10px;
+}
+
+.ug-list::-webkit-scrollbar {
+  display: none;
+}
+.list-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 5px;
+  margin: 10px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background-color: white;
+  transition-duration: .5s;
+}
+
+.list-item:hover {
+  background-color: rgb(226, 226, 226);
+}
+
+.list-item:active {
+  background-color: white;
 }

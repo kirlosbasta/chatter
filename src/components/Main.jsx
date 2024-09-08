@@ -2,6 +2,9 @@ import React from 'react';
 import './styles.css';
 import ChatArea from './ChatArea';
 import SideBar from './SideBar';
+import Welcome from './Welcome';
+import CreateGroup from './CreateGroup';
+import Users_Groups from './Users_Groups';
 
 function Main() {
   const conversation = {
@@ -13,7 +16,10 @@ function Main() {
   return (
     <div className='main-container'>
       <SideBar />
-      <ChatArea props={conversation} />
+      {/* <Welcome /> */}
+      {/* <CreateGroup /> */}
+      {/* <ChatArea props={conversation} /> */}
+      <Users_Groups />
     </div>
   );
 }
