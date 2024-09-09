@@ -37,6 +37,7 @@
 }
 
 .search-box {
+  width: 100%;
   outline-width: 0;
   border: none;
   margin-left: 10px;
@@ -67,7 +68,17 @@
   column-gap: 10px;
   margin: 5px;
   padding: 5px;
+  padding-left: 10px;
   border-radius: 20px;
+  transition-duration: .5s;
+}
+
+.conversations-item:hover {
+  background-color: rgb(226, 226, 226);
+}
+
+.conversations-item:active {
+  background-color: white;
 }
 
 .con-icon {
@@ -235,7 +246,7 @@
   align-self: center;
   background-color: white;
   border-radius: 20px;
-  margin: 10px;
+  margin: 5px;
   padding: 20px 10px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
@@ -328,3 +339,38 @@
 .list-item:active {
   background-color: white;
 }
+
+/* ================================ Dark theme colors ========================== */
+.dark {
+  color: white !important;
+  background-color: rgb(60, 60, 60) !important;
+}
+
+.grey {
+  color: white !important;
+  background-color: rgba(130, 130, 130, 0.169) !important;
+}
+
+.blackish {
+  color: white !important;
+  background-color: rgba(0, 0, 0, 0.874) !important;
+}
+
+.pink {
+  color: white !important;
+  background-color: rgb(255, 64, 129) !important;
+}
+
+.icon {
+  width: 1.25em !important;
+  height: 1.25em !important;
+}
+
+.conversations-item:hover.dark {
+  background-color: rgba(105, 105, 105, 0.404) !important;
+}
+
+.conversations-item:active.dark {
+  background-color: rgb(60, 60, 60);
+}
+

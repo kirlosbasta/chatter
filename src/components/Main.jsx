@@ -1,25 +1,14 @@
-import React from 'react';
 import './styles.css';
-import ChatArea from './ChatArea';
 import SideBar from './SideBar';
-import Welcome from './Welcome';
-import CreateGroup from './CreateGroup';
-import Users_Groups from './Users_Groups';
+import { Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function Main() {
-  const conversation = {
-    name: 'Test #1',
-    lastMessage: 'Last message # 1',
-    timeStamp: 'today',
-  };
-
+  const lightMode = useSelector((state) => state.themeKey);
   return (
-    <div className='main-container'>
+    <div className={'main-container' + (!lightMode ? ' grey' : '')}>
       <SideBar />
-      {/* <Welcome /> */}
-      {/* <CreateGroup /> */}
-      {/* <ChatArea props={conversation} /> */}
-      <Users_Groups />
+      <Outlet />
     </div>
   );
 }
