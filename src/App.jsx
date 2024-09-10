@@ -8,6 +8,7 @@ import CreateGroup from './components/CreateGroup';
 import Users from './components/Users';
 import Groups from './components/Groups';
 import { useSelector } from 'react-redux';
+import Conversations from './components/Conversations';
 
 function App() {
   const lightMode = useSelector((state) => state.themeKey);
@@ -21,6 +22,7 @@ function App() {
           <Route path='create-group' element={<CreateGroup />} />
           <Route path='users' element={<Users />} />
           <Route path='groups' element={<Groups />} />
+          <Route path='chats' element={<Conversations />} />
         </Route>
       </Routes>
     </div>

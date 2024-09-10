@@ -8,7 +8,7 @@ function ConversationItem({ props }) {
   return (
     <div
       className={'conversations-item' + (!lightMode ? ' dark' : '')}
-      onClick={() => navigate('chat')}
+      onClick={() => navigate('../chat')}
     >
       <p className='con-icon'>{props.name[0]}</p>
       <p className={'con-name' + (!lightMode ? ' dark' : '')}>{props.name}</p>

@@ -18,11 +18,15 @@
 .sb-header {
   background-color: white;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   padding: 10px 5px;
   margin: 10px;
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#chat-icon {
+  display: none;
 }
 
 /* ============================ Side Bar Search ========================= */
@@ -70,7 +74,7 @@
   padding: 5px;
   padding-left: 10px;
   border-radius: 20px;
-  transition-duration: .5s;
+  transition-duration: 0.5s;
 }
 
 .conversations-item:hover {
@@ -329,7 +333,7 @@
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   background-color: white;
-  transition-duration: .5s;
+  transition-duration: 0.5s;
 }
 
 .list-item:hover {
@@ -374,3 +378,49 @@
   background-color: rgb(60, 60, 60);
 }
 
+/* =================================== Responsive media query =========================== */
+@media only screen and (max-width: 40em) {
+  .sb-search {
+    display: none;
+  }
+  .sidebar-container .sb-conversations {
+    display: none;
+  }
+  .sb-header {
+    flex-direction: column;
+    flex: 1;
+    width: min-content;
+    justify-content: space-evenly;
+  }
+
+  .sidebar-container {
+    flex: 0;
+  }
+  .chatArea-container {
+    flex: 1;
+  }
+
+  .main-container {
+    height: 100vh;
+    width: 100vw;
+  }
+
+  #chat-icon {
+    display: flex;
+  }
+
+  .list-container {
+    flex: 1;
+  }
+
+  .createGroup-container {
+    flex: 1;
+  }
+
+  .image-container {
+    display: none;
+  }
+  .login-box {
+    flex: 1;
+  }
+}
