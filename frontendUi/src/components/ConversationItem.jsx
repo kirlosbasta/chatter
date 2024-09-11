@@ -8,12 +8,21 @@ function ConversationItem({ props }) {
   return (
     <div
       className={'conversations-item' + (!lightMode ? ' dark' : '')}
-      onClick={() => navigate('../chat')}
+      onClick={() => {
+        // If the screen width is less than or equal to 40em, navigate to '../chat'
+        if (window.innerWidth <= 16 * 40) {
+          navigate('../chat');
+        } else {
+          navigate('chat');
+        }
+      }}
     >
       <p className='con-icon'>{props.name[0]}</p>
       <p className={'con-name' + (!lightMode ? ' dark' : '')}>{props.name}</p>
       <p className='con-lastMessage'>{props.lastMessage}</p>
-      <p className={'con-timeStamp' + (!lightMode ? ' dark' : '')}>{props.timeStamp}</p>
+      <p className={'con-timeStamp' + (!lightMode ? ' dark' : '')}>
+        {props.timeStamp}
+      </p>
     </div>
   );
 }
