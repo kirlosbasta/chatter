@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import './App.css';
 import Main from './components/Main';
 import Login from './components/Login';
@@ -7,8 +8,8 @@ import ChatArea from './components/ChatArea';
 import CreateGroup from './components/CreateGroup';
 import Users from './components/Users';
 import Groups from './components/Groups';
-import { useSelector } from 'react-redux';
 import Conversations from './components/Conversations';
+import Register from './components/Register';
 
 function App() {
   const lightMode = useSelector((state) => state.themeKey);
@@ -16,6 +17,7 @@ function App() {
     <div className={'app' + (!lightMode ? ' blackish' : '')}>
       <Routes>
         <Route path='/' element={<Login />} />
+        <Route path='/register' element={<Register />} />
         <Route path='/app' element={<Main />}>
           <Route path='welcome' element={<Welcome />} />
           <Route path='chat' element={<ChatArea />} />

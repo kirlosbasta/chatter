@@ -288,6 +288,11 @@
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+.link {
+  color: #d219d2;
+  text-decoration: none;
+}
+
 /* ====================================== Online user and groups ========================== */
 .list-container {
   flex: 0.7;
