@@ -1,0 +1,53 @@
+{
+  "name": "chatter",
+  "version": "1.0.0",
+  "description": "Full chat application with real time messaging",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon ./app.js",
+    "dev": "nodemon --exec babel-node --presets @babel/preset-env",
+    "test": "./node_modules/.bin/mocha --require @babel/register --recursive --exit",
+    "lint": "./node_modules/.bin/eslint",
+    "lint:check": "./node_modules/.bin/eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kirlosbasta/chatter.git"
+  },
+  "author": "Kirlos Basta & Penn Junior",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kirlosbasta/chatter/issues"
+  },
+  "homepage": "https://github.com/kirlosbasta/chatter#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.2",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "validator": "^13.12.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.25.6",
+    "@babel/core": "^7.25.2",
+    "@babel/node": "^7.25.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.24.8",
+    "@babel/preset-env": "^7.25.4",
+    "@babel/register": "^7.24.6",
+    "@faker-js/faker": "^9.0.0",
+    "chai": "^5.1.1",
+    "chai-http": "^5.0.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-jest": "^28.8.3",
+    "mocha": "^10.7.3",
+    "nodemon": "^3.1.4",
+    "sinon": "^18.0.1"
+  }
+}
