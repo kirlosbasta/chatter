@@ -1,12 +1,21 @@
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
-import { useSelector } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import logo from '../assets/logo-no-background.png';
 import './styles.css';
 
 function Groups() {
   const lightMode = useSelector((state) => state.themeKey);
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!userData) {
+      navigate('/');
+    }
+  });
 
   return (
     <AnimatePresence>

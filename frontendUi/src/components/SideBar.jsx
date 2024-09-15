@@ -7,6 +7,7 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import SearchIcon from '@mui/icons-material/Search';
 import ChatIcon from '@mui/icons-material/Chat';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { IconButton } from '@mui/material';
 import './styles.css';
 import ConversationItem from './ConversationItem';
@@ -20,13 +21,17 @@ function SideBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const logoutHandler = () => {
+    localStorage.removeItem('userData');
+    navigate('/');
+  };
   return (
-    <div className='sidebar-container'>
+    <div className="sidebar-container">
       <div className={'sb-header' + (!lightMode ? ' dark' : '')}>
         <IconButton>
           <AccountCircleIcon className={'icon' + (!lightMode ? ' dark' : '')} />
         </IconButton>
-        <IconButton id='chat-icon' onClick={() => navigate('chats')}>
+        <IconButton id="chat-icon" onClick={() => navigate('chats')}>
           <ChatIcon className={'icon' + (!lightMode ? ' dark' : '')} />
         </IconButton>
         <IconButton onClick={() => navigate('users')}>
@@ -45,14 +50,17 @@ function SideBar() {
             <LightModeIcon className={'icon' + (!lightMode ? ' dark' : '')} />
           )}
         </IconButton>
+        <IconButton onClick={logoutHandler}>
+          <LogoutIcon className={'icon' + (!lightMode ? ' dark' : '')} />
+        </IconButton>
       </div>
       <div className={'sb-search' + (!lightMode ? ' dark' : '')}>
         <IconButton>
           <SearchIcon className={'icon' + (!lightMode ? ' dark' : '')} />
         </IconButton>
         <input
-          type='text'
-          placeholder='search'
+          type="text"
+          placeholder="search"
           className={'search-box ' + (!lightMode ? ' dark' : '')}
         />
       </div>

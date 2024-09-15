@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import ChatterError from '../utils/ChatterError.js';
 
 dotenv.config();
-mongoose.Error.ValidationError;
 /**
  *
  * @param {Error | ChatterError | mongoose.Error} error
@@ -20,7 +19,10 @@ function errorHandler(err, req, res, next) {
   if (!(error instanceof ChatterError)) {
     const statusCode =
       error instanceof mongoose.Error.ValidationError ? 400 : 500;
-    const message = error.message || 'Something went wrong';
+    const message =
+      error instanceof mongoose.Error.ValidationError
+        ? error.message
+        : 'Something went wrong';
     error = new ChatterError(statusCode, message, err.stack);
   }
   const status = error.statusCode || 500;

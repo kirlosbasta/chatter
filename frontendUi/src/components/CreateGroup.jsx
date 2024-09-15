@@ -1,12 +1,20 @@
-import React from 'react';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import { IconButton } from '@mui/material';
-import { useSelector } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import './styles.css';
 
 function CreateGroup() {
   const lightMode = useSelector((state) => state.themeKey);
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!userData) {
+      navigate('/');
+    }
+  });
   return (
     <AnimatePresence>
       <motion.div
