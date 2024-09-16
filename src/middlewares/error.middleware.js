@@ -15,6 +15,7 @@ dotenv.config();
  */
 function errorHandler(err, req, res, next) {
   let error = err;
+  console.error(error);
   // check if error is an instance of ChatterError to keep the error structure consistent
   if (!(error instanceof ChatterError)) {
     const statusCode =

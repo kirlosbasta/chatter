@@ -1,6 +1,6 @@
 import AsyncHandler from 'express-async-handler';
-import ChatterError from '../utils/ChatterError.js';
-import UserModel from '../models/user.js';
+import ChatterError from '../../utils/ChatterError.js';
+import UserModel from '../../models/user.model.js';
 
 /**
  *

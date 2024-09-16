@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as JwtStratgy, ExtractJwt } from 'passport-jwt';
 import dotenv from 'dotenv';
-import User from '../models/user.js';
+import UserModel from '../models/user.model.js';
 import ChatterError from '../utils/ChatterError.js';
 
 dotenv.config();
@@ -30,7 +30,7 @@ const options = {
 passport.use(
   new JwtStratgy(options, async (payload, done) => {
     try {
-      const user = await User.findById(payload.id);
+      const user = await UserModel.findById(payload.id);
       if (!user) {
         throw new ChatterError(404, 'User not found');
       }
