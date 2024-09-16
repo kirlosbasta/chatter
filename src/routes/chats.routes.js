@@ -5,7 +5,12 @@ import {
   getOrCreateChatController,
   deleteChatController,
   createGroupController,
-  addUserToGroupController,
+  addSelfToGroupController,
+  leaveGroupController,
+  deleteGroupChatController,
+  removeUserFromGroupChatController,
+  getGroupChatController,
+  addUserToGroupChatController,
 } from '../controllers/chat.controller.js';
 
 const router = Router();
@@ -15,6 +20,11 @@ router.get('/chats', getAllChatsController);
 router.get('/chats/:receiverId', getOrCreateChatController);
 router.delete('/chats/:chatId', deleteChatController);
 router.post('/groups', createGroupController);
-router.post('/groups/:groupId', addUserToGroupController);
+router.post('/groups/:groupId', addSelfToGroupController);
+router.delete('/groups/:groupId/leave', leaveGroupController);
+router.delete('/groups/:groupId', deleteGroupChatController);
+router.delete('/groups/:groupId/:userId', removeUserFromGroupChatController);
+router.get('/groups/:groupId', getGroupChatController);
+router.post('/groups/:groupId/:userId', addUserToGroupChatController);
 
 export default router;

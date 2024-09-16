@@ -238,22 +238,25 @@ const createGroupController = asyncHandler(async (req, res) => {
   ]);
   return res.status(201).json(payload[0]);
 });
-// add myself to group chat
+
 /**
  * @param {import('express').Request} req - request object
  * @param {import('express').Response} res - response object
  *
  * @description - add the user to a group chat
  */
-const addUserToGroupController = asyncHandler(async (req, res) => {
+const addSelfToGroupController = asyncHandler(async (req, res) => {
   // check if group id is valid mongo id
   const { groupId } = req.params;
   if (!validator.isMongoId(groupId)) {
-    throw new ChatterError(404, 'User Not Found');
+    throw new ChatterError(404, 'Group Not Found');
   }
   // check if group exists
-  const groupChat = await ChatModel.findById(groupId);
-  if (!groupChat) throw new ChatterError(404, 'User Not Found');
+  const groupChat = await ChatModel.findOne({
+    _id: new mongoose.Types.ObjectId(groupId),
+    isGroupChat: true,
+  });
+  if (!groupChat) throw new ChatterError(404, 'Group Not Found');
   // check if the user already in the group
   if (groupChat.users.includes(req.user._id)) {
     throw new ChatterError(400, 'You are already in the group');
@@ -270,12 +273,218 @@ const addUserToGroupController = asyncHandler(async (req, res) => {
   ]);
   return res.status(200).json(payload);
 });
-// leave group chat
-// delete a group chat if i'm the admin with all the messages
+
+/**
+ * @param {import('express').Request} req - request object
+ * @param {import('express').Response} res - response object
+ *
+ * @description - leave a group chat
+ */
+const leaveGroupController = asyncHandler(async (req, res) => {
+  // check if group id is valid mongo id
+  const { groupId } = req.params;
+  if (!validator.isMongoId(groupId)) {
+    throw new ChatterError(404, 'Group Not Found');
+  }
+  // check if group exists
+  const groupChat = await ChatModel.findOne({
+    _id: new mongoose.Types.ObjectId(groupId),
+    isGroupChat: true,
+  });
+  if (!groupChat) throw new ChatterError(404, 'Group Not Found');
+
+  // check if the user is in the group
+  if (!groupChat.users.includes(req.user._id)) {
+    throw new ChatterError(400, 'You are not in the group');
+  }
+  // check if the user is the admin
+  if (groupChat.admin.toString() === req.user._id.toString()) {
+    throw new ChatterError(400, 'You are the admin of the group');
+  }
+  // remove the user from the group
+  await ChatModel.findByIdAndUpdate(groupChat._id, {
+    $pull: { users: req.user._id },
+  });
+  const [payload] = await ChatModel.aggregate([
+    {
+      $match: { _id: groupChat._id },
+    },
+    ...populateChat,
+  ]);
+  return res.status(200).json(payload);
+});
+
+/**
+ * @param {import('express').Request} req - request object
+ * @param {import('express').Response} res - response object
+ *
+ * @description - delete a group chat
+ */
+const deleteGroupChatController = asyncHandler(async (req, res) => {
+  // check if group id is valid mongo id
+  const { groupId } = req.params;
+  if (!validator.isMongoId(groupId)) {
+    throw new ChatterError(404, 'Group Not Found');
+  }
+
+  // check if group exists
+  const groupChat = await ChatModel.findOne({
+    _id: new mongoose.Types.ObjectId(groupId),
+    isGroupChat: true,
+  });
+
+  if (!groupChat) throw new ChatterError(404, 'Group Not Found');
+  // check if the user is the admin if not return 403 forbidden
+
+  if (groupChat.admin.toString() !== req.user._id.toString()) {
+    throw new ChatterError(403, 'You are not the admin of the group');
+  }
+
+  // if the user is the admin delete the group and all the messages
+  await ChatMessageModel.deleteMany({ chat: groupChat._id });
+  await ChatModel.deleteOne({ _id: groupChat._id });
+  return res
+    .status(200)
+    .json({ success: true, message: 'Group deleted successfuly' });
+});
+
+/**
+ * @param {import('express').Request} req - request object
+ * @param {import('express').Response} res - response object
+ *
+ * @description - remove a user from a group chat if i'm the admin
+ */
+const removeUserFromGroupChatController = asyncHandler(async (req, res) => {
+  // check if group id is valid mongo id
+  const { groupId, userId } = req.params;
+  if (!validator.isMongoId(groupId)) {
+    throw new ChatterError(404, 'Group Not Found');
+  }
+  if (!validator.isMongoId(userId)) {
+    throw new ChatterError(404, 'User Not Found');
+  }
+  // check if group exists
+  const groupChat = await ChatModel.findOne({
+    _id: new mongoose.Types.ObjectId(groupId),
+    isGroupChat: true,
+  });
+  if (!groupChat) throw new ChatterError(404, 'Group Not Found');
+  // check if the user exist
+  const user = await UserModel.findById(userId);
+  if (!user) throw new ChatterError(404, 'User Not Found');
+  // check if the user is the admin if not throw 403 forbidden
+  if (groupChat.admin.toString() !== req.user._id.toString()) {
+    throw new ChatterError(403, 'You are not the admin of the group');
+  }
+  // check if the user is in the group
+  if (!groupChat.users.includes(user._id)) {
+    throw new ChatterError(400, 'User is not in the group');
+  }
+  // check if the userId to remove is the admin
+  if (groupChat.admin.toString() === userId) {
+    throw new ChatterError(400, 'You are the admin of the group');
+  }
+  // remove the user from the group
+  await ChatModel.findByIdAndUpdate(groupChat._id, {
+    $pull: { users: user._id },
+  });
+  // return the group
+  const [payload] = await ChatModel.aggregate([
+    {
+      $match: { _id: groupChat._id },
+    },
+    ...populateChat,
+  ]);
+  return res.status(200).json(payload);
+});
+
+// get a group chat details
+/**
+ * @param {import('express').Request} req - request object
+ * @param {import('express').Response} res - response object
+ *
+ * @description - get a group chat details
+ */
+const getGroupChatController = asyncHandler(async (req, res) => {
+  // check if group id is valid mongo id
+  const { groupId } = req.params;
+  if (!validator.isMongoId(groupId)) {
+    throw new ChatterError(404, 'Group Not Found');
+  }
+  // check if group exists and populate the group and return it
+  const [groupChat] = await ChatModel.aggregate([
+    {
+      $match: { _id: new mongoose.Types.ObjectId(groupId), isGroupChat: true },
+    },
+    ...populateChat,
+  ]);
+  if (!groupChat) throw new ChatterError(404, 'Group Not Found');
+  return res.status(200).json(groupChat);
+});
+
+// add new user to a group chat as admin
+/**
+ * @param {import('express').Request} req - request object
+ * @param {import('express').Response} res - response object
+ *
+ * @description - add new user to a group chat as admin
+ */
+const addUserToGroupChatController = asyncHandler(async (req, res) => {
+  const { groupId, userId } = req.params;
+  // check if group id is valid mongo id
+  if (!validator.isMongoId(groupId)) {
+    throw new ChatterError(404, 'Group Not Found');
+  }
+  // check if user id is valid mongo id
+  if (!validator.isMongoId(userId)) {
+    throw new ChatterError(404, 'User Not Found');
+  }
+  // check if group exists
+  const groupChat = await ChatModel.findOne({
+    _id: new mongoose.Types.ObjectId(groupId),
+    isGroupChat: true,
+  });
+  if (!groupChat) throw new ChatterError(404, 'Group Not Found');
+  // check if the user exists
+  const user = await UserModel.findById(userId);
+  if (!user) throw new ChatterError(404, 'User Not Found');
+  // check if the user is the admin
+  if (groupChat.admin.toString() !== req.user._id.toString()) {
+    throw new ChatterError(403, 'You are not the admin of the group');
+  }
+  // check if the user is in the group
+  if (groupChat.users.includes(user._id)) {
+    throw new ChatterError(400, 'User is already in the group');
+  }
+  // check if the user to add is not the admin
+  if (groupChat.admin.toString() === userId) {
+    throw new ChatterError(400, 'User is the admin of the group');
+  }
+  // add the user to the group
+  await ChatModel.findByIdAndUpdate(groupChat._id, {
+    $push: { users: user._id },
+  });
+  // return the group
+  const [payload] = await ChatModel.aggregate([
+    {
+      $match: {
+        _id: groupChat._id,
+      },
+    },
+    ...populateChat,
+  ]);
+  return res.status(200).json(payload);
+});
+
 export {
   getAllChatsController,
   getOrCreateChatController,
   deleteChatController,
   createGroupController,
-  addUserToGroupController,
+  addSelfToGroupController,
+  leaveGroupController,
+  deleteGroupChatController,
+  removeUserFromGroupChatController,
+  getGroupChatController,
+  addUserToGroupChatController,
 };
