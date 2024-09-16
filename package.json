@@ -9,7 +9,12 @@
     "dev": "nodemon --exec babel-node --presets @babel/preset-env",
     "test": "./node_modules/.bin/mocha --require @babel/register --recursive --exit",
     "lint": "./node_modules/.bin/eslint",
-    "lint:check": "./node_modules/.bin/eslint ."
+    "lint:check": "./node_modules/.bin/eslint .",
+    "seed:user": "node ./src/seed/user.seed.js",
+    "seed:chats": "node ./src/seed/oneToOneChat.seed.js",
+    "seed:groups": "node ./src/seed/groups.seed.js",
+    "seed:messages": "node ./src/seed/messages.seed.js",
+    "seed:clean": "node ./src/seed/delete.seed.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +29,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "express-async-handler": "^1.2.0",
