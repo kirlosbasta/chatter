@@ -22,7 +22,7 @@ async function register(req, res) {
   if (user) throw new ChatterError(400, 'Email is already exist');
   user = await UserModel.findOne({ username }).exec();
   if (user) throw new ChatterError(400, 'Username is already exist');
-  user = await UserModel.create({ username, email, password }).exec();
+  user = await UserModel.create({ username, email, password });
   res.status(201);
   return res.json({
     _id: user._id,

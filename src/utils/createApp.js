@@ -1,5 +1,6 @@
 import express from 'express';
 import passport from 'passport';
+import cors from 'cors';
 import router from '../routes/index.js';
 import connectDB from './database.js';
 import '../passport/jwt.stratgy.js';
@@ -8,6 +9,7 @@ function createApp() {
   const app = express();
 
   connectDB();
+  app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
