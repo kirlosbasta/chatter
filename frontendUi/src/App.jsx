@@ -10,21 +10,22 @@ import Users from './components/Users';
 import Groups from './components/Groups';
 import Conversations from './components/Conversations';
 import Register from './components/Register';
+import LandingPage from './components/LandingPage';
 
 function App() {
   const lightMode = useSelector((state) => state.themeKey);
   return (
     <div className={'app' + (!lightMode ? ' blackish' : '')}>
       <Routes>
-        <Route path='/' element={<Login />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/app' element={<Main />}>
-          <Route path='welcome' element={<Welcome />} />
-          <Route path='chat' element={<ChatArea />} />
-          <Route path='create-group' element={<CreateGroup />} />
-          <Route path='users' element={<Users />} />
-          <Route path='groups' element={<Groups />} />
-          <Route path='chats' element={<Conversations />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/app" element={<Main />}>
+          <Route path="welcome" element={<Welcome />} />
+          <Route path="chat" element={<ChatArea />} />
+          <Route path="create-group" element={<CreateGroup />} />
+          <Route path="users" element={<Users />} />
+          <Route path="groups" element={<Groups />} />
+          <Route path="chats" element={<Conversations />} />
         </Route>
       </Routes>
     </div>
