@@ -1,10 +1,10 @@
+import mongoose from 'mongoose';
 import validator from 'validator';
 import asyncHandler from 'express-async-handler';
-import mongoose from 'mongoose';
-import ChatModel from '../models/chat.model.js';
 import UserModel from '../models/user.model.js';
-import ChatMessageModel from '../models/message.model.js';
+import ChatModel from '../models/chat.model.js';
 import ChatterError from '../utils/ChatterError.js';
+import ChatMessageModel from '../models/message.model.js';
 
 /**
  * @description -  populate users and lastMessage fileds in chatModel
@@ -477,14 +477,14 @@ const addUserToGroupChatController = asyncHandler(async (req, res) => {
 });
 
 export {
-  getAllChatsController,
-  getOrCreateChatController,
   deleteChatController,
-  createGroupController,
-  addSelfToGroupController,
   leaveGroupController,
-  deleteGroupChatController,
-  removeUserFromGroupChatController,
+  createGroupController,
+  getAllChatsController,
   getGroupChatController,
+  addSelfToGroupController,
+  deleteGroupChatController,
+  getOrCreateChatController,
   addUserToGroupChatController,
+  removeUserFromGroupChatController,
 };
