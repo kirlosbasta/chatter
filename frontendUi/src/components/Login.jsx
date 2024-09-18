@@ -54,18 +54,18 @@ function Login() {
       >
         <CircularProgress color="dark" />
       </Backdrop>
-      <div className={"login-container" + (!lightMode ? ' dark' : '')}>
-        <div className={"image-container" + (!lightMode ? ' dark' : '')}>
+      <div className={'login-container' + (!lightMode ? ' dark' : '')}>
+        <div className={'image-container' + (!lightMode ? ' dark' : '')}>
           <img src={logo} alt="Logo" className="welcome-logo" />
         </div>
-        <div className={"login-box" + (!lightMode ? ' dark' : '')}>
+        <div className={'login-box' + (!lightMode ? ' dark' : '')}>
           <h1>Login to your account</h1>
           <TextField
             id="username"
             label="Username"
             variant="outlined"
             name="username"
-            className={(!lightMode ? 'dark' : '')}
+            className={!lightMode ? 'dark' : ''}
             onChange={changeHandler}
             onKeyDown={(e) => {
               if (e.code === 'Enter') {

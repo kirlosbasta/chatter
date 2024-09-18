@@ -14,7 +14,7 @@ const Hero = () => {
           <br /> One Message at a Time.
         </h2>
 
-        <p className="mb-16">
+        <p className="mb-16 text-darkGrayishBlue">
           At Chatter, we’re dedicated to bringing people together, one message{' '}
           <br /> at a time.Our chat application is designed to connect friends,
           colleagues,
@@ -24,6 +24,7 @@ const Hero = () => {
           chat and experience the joy of every conversation with Chatter.
         </p>
         <Button
+          Link="/login"
           className="uppercase font-source-sans bg-[#1F1F39] text-white px-12 py-3 rounded-xl text-2xl"
           title="LET'S CHAT"
         />
