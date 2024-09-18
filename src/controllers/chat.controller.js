@@ -141,7 +141,7 @@ const getOrCreateChatController = asyncHandler(async (req, res) => {
   }
   // if doesn't exit create a chat and send it back with 201 status
   const newChat = await ChatModel.create({
-    name: req.user.username,
+    name: receiver.username,
     isGroupChat: false,
     users: [req.user._id, receiver._id],
     admin: req.user._id,
@@ -159,6 +159,30 @@ const getOrCreateChatController = asyncHandler(async (req, res) => {
   return res.status(201).json(populatedNewChat[0]);
 });
 
+/**
+ * @param {import('express').Request} req - request object
+ * @param {import('express').Response} res - response object
+ *
+ * @description - get a chat by chatId
+ */
+const getChatByIdController = asyncHandler(async (req, res) => {
+  const { chatId } = req.params;
+  if (!validator.isMongoId(chatId)) {
+    throw new ChatterError(404, 'Chat is Not Found');
+  }
+  const [chat] = await ChatModel.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(chatId),
+      },
+    },
+    ...populateChat,
+  ]);
+  if (!chat) {
+    throw new ChatterError(404, 'Chat is Not Found');
+  }
+  return res.status(200).json(chat);
+});
 /**
  * @param {import('express').Request} req - request object
  * @param {import('express').Response} res - response object
@@ -481,6 +505,7 @@ export {
   leaveGroupController,
   createGroupController,
   getAllChatsController,
+  getChatByIdController,
   getGroupChatController,
   addSelfToGroupController,
   deleteGroupChatController,

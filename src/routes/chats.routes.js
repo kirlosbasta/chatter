@@ -11,13 +11,15 @@ import {
   removeUserFromGroupChatController,
   getGroupChatController,
   addUserToGroupChatController,
+  getChatByIdController,
 } from '../controllers/chat.controller.js';
 
 const router = Router();
 
 router.use(passport.authenticate('jwt', { session: false }));
 router.get('/chats', getAllChatsController);
-router.get('/chats/:receiverId', getOrCreateChatController);
+router.post('/chats/:receiverId', getOrCreateChatController);
+router.get('/chats/:chatId', getChatByIdController);
 router.delete('/chats/:chatId', deleteChatController);
 router.post('/groups', createGroupController);
 router.post('/groups/:groupId', addSelfToGroupController);

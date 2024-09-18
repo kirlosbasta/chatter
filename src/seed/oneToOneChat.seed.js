@@ -11,14 +11,10 @@ const seedChats = async (n) => {
     const num1 = faker.number.int(users.length);
     const num2 = faker.number.int(users.length);
     await ChatModel.create({
-      name: faker.person.fullName(),
+      name: users[num2].username,
       isGroupChat: false,
       users: [users[num1], users[num2]],
       admin: users[num1],
-      lastMessage: await ChatMessageModel.create({
-        sender: users[num1],
-        content: faker.lorem.sentence({ min: 5, max: 20 }),
-      }),
     });
   }
   console.log('Finished adding the chats');
