@@ -61,10 +61,12 @@ const Menu = () => {
           })}
           <div className="mx-auto flex flex-col lg:flex-row justify-center gap-8">
             <Button
+              Link="/login"
               className="uppercase font-source-sans  bg-transparent transition delay-150 duration-200 ease-in-out hover:bg-[#1F1F39] hover:text-white text-black border border-[#222] px-9 py-2 rounded-xl text-lg"
               title="Login"
             />
             <Button
+              Link="/register"
               className="uppercase font-source-sans bg-[#1F1F39] text-white px-9 py-2 rounded-xl text-lg"
               title="Sign Up"
             />
