@@ -22,7 +22,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/app" element={<Main />}>
           <Route path="welcome" element={<Welcome />} />
-          <Route path="chat" element={<ChatArea />} />
+          <Route path="chat/:chatId" element={<ChatArea />} />
           <Route path="create-group" element={<CreateGroup />} />
           <Route path="users" element={<Users />} />
           <Route path="groups" element={<Groups />} />
