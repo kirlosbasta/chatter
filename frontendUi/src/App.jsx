@@ -19,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/app" element={<Main />}>
           <Route path="welcome" element={<Welcome />} />
           <Route path="chat" element={<ChatArea />} />
