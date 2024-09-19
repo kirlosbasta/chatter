@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 function MessageOther({ name, message, time }) {
   const lightMode = useSelector((state) => state.themeKey);
-
+  console.log(name);
   return (
     <div className="other-message-container">
       <div className={'conversations-item' + (!lightMode ? ' dark' : '')}>

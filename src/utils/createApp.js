@@ -5,7 +5,7 @@ import { Server } from 'socket.io';
 import { createServer } from 'http';
 import router from '../routes/index.js';
 import connectDB from './database.js';
-import createSocket from '../socket/socket.js';
+import { initSocket } from '../socket/socket.js';
 import '../passport/jwt.stratgy.js';
 
 function createApp() {
@@ -13,7 +13,8 @@ function createApp() {
   const httpServer = createServer(app);
   const io = new Server(httpServer, {
     cors: {
-      origin: '*',
+      origin: 'http://localhost:3000',
+      credentials: true,
     },
   });
   app.set('io', io);
@@ -27,7 +28,7 @@ function createApp() {
 
   app.use('/api/v1', router);
 
-  createSocket(io);
+  initSocket(io);
 
   // important to listen to httpServer instead of app because of socket.io
   return httpServer;

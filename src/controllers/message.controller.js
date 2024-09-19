@@ -3,6 +3,7 @@ import asyncHandler from 'express-async-handler';
 import ChatModel from '../models/chat.model.js';
 import ChatterError from '../utils/ChatterError.js';
 import ChatMessageModel from '../models/message.model.js';
+import { emitSocketEvent } from '../socket/socket.js';
 
 /**
  * @description - populate the sender field of the message
@@ -49,14 +50,14 @@ const getAllMessagesController = asyncHandler(async (req, res) => {
   if (!chat.users.includes(req.user._id)) {
     throw new ChatterError(403, 'User is Not in the Chat');
   }
-  // return the messages populated
+  // return the messages populated in ascending order the lastest message is at the end
   const payload = await ChatMessageModel.aggregate([
     {
       $match: { chat: chat._id },
     },
     ...populateSender,
     {
-      $sort: { createdAt: -1 },
+      $sort: { createdAt: 1 },
     },
     {
       $project: {
@@ -107,6 +108,7 @@ const createMessageController = asyncHandler(async (req, res) => {
     lastMessage: message._id,
   });
   // return the message
+  emitSocketEvent(req, chatId, 'receive-message', message);
   return res.status(201).json(message);
 });
 

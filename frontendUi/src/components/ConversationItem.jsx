@@ -10,6 +10,7 @@ function ConversationItem({ props }) {
     {},
     { hour: '2-digit', minute: '2-digit', hour12: true },
   );
+  console.log(props);
   let content = props.lastMessage?.content;
   if (content?.length > 40) {
     content = content.slice(0, 40) + '...';

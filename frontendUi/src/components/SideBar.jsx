@@ -97,6 +97,7 @@ function SideBar() {
         <input
           type="text"
           placeholder="search"
+          value={search}
           className={'search-box ' + (!lightMode ? ' dark' : '')}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e) => {
@@ -105,7 +106,12 @@ function SideBar() {
             }
           }}
         />
-        <IconButton onClick={() => setSearchStatus(false)}>
+        <IconButton
+          onClick={() => {
+            setSearch('');
+            setSearchStatus(false);
+          }}
+        >
           <CancelIcon className={'icon' + (!lightMode ? ' dark' : '')} />
         </IconButton>
       </div>
