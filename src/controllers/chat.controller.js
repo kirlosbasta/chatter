@@ -141,7 +141,7 @@ const getOrCreateChatController = asyncHandler(async (req, res) => {
   }
   // if doesn't exit create a chat and send it back with 201 status
   const newChat = await ChatModel.create({
-    name: receiver.username,
+    name: 'one to one chat',
     isGroupChat: false,
     users: [req.user._id, receiver._id],
     admin: req.user._id,

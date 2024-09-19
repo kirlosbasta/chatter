@@ -21,6 +21,7 @@ function ChatArea() {
   const [newMessage, setNewMessage] = useState('');
   const { socket } = useSocket();
   const navigate = useNavigate();
+  const [chatName, setChatName] = useState('');
   useEffect(() => {
     if (!userData) {
       navigate('/');
@@ -64,11 +65,13 @@ function ChatArea() {
         config,
       );
       // console.log(response.data);
+
       setChat(response.data);
     } catch (error) {
       console.error(error);
     }
   }
+
   useEffect(() => {
     getChatById();
     getMessages(chatId);
@@ -76,11 +79,22 @@ function ChatArea() {
     socket?.on('receive-message', (message) => {
       setNewMessage(message);
     });
+
     return () => {
       socket?.emit('leave chat', chatId);
       socket?.off('receive-message');
-    }
+    };
   }, [chatId, socket, newMessage]);
+
+  useEffect(() => {
+    if (chat.isGroupChat) {
+      setChatName(chat.name);
+    } else {
+      console.log('inside else');
+      const otherUser = chat.users?.find((user) => user._id !== userData._id);
+      setChatName(otherUser?.username);
+    }
+  }, [chat, chatId]);
 
   async function deleteChatHandler() {
     try {
@@ -100,11 +114,9 @@ function ChatArea() {
   return (
     <div className="chatArea-container">
       <div className={'chatArea-header' + (!lightMode ? ' dark' : '')}>
-        <p className="con-icon">{chat.name?.charAt(0)}</p>
+        <p className="con-icon">{chatName?.charAt(0)}</p>
         <div className={'header-text' + (!lightMode ? ' dark' : '')}>
-          <p className={'con-name' + (!lightMode ? ' dark' : '')}>
-            {chat.name}
-          </p>
+          <p className={'con-name' + (!lightMode ? ' dark' : '')}>{chatName}</p>
           <p className={'con-timeStamp' + (!lightMode ? ' dark' : '')}>
             Online
           </p>
@@ -135,7 +147,7 @@ function ChatArea() {
           return (
             <MessageOther
               key={message._id}
-              name={message.sender.username}
+              name={message.sender?.username}
               message={message.content}
               time={timeFormatted}
             />
