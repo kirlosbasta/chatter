@@ -55,9 +55,12 @@ function ChatArea() {
 
   async function deleteChatHandler() {
     try {
-      const url = chat.isGroupChat
-        ? `http://localhost:5000/api/v1/groups/${chatId}`
+      let url = chat.isGroupChat
+        ? `http://localhost:5000/api/v1/groups/${chatId}/leave`
         : `http://localhost:5000/api/v1/chats/${chatId}`;
+      if (chat.isGroupChat && chat.admin === userData._id) {
+        url = `http://localhost:5000/api/v1/groups/${chatId}`;
+      }
       await axios.delete(url, config);
       setChat({});
       navigate('../welcome');

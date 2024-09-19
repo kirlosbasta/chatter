@@ -74,8 +74,8 @@ const populateChat = [
  * @param {import('express').Response} res - response object
  *
  * @description - search for user by username or email by search query
- * by default it searches for both username and email fields
- * and if the search query is empty it will return an empty list
+ * by default it searches for username and if the search query is empty
+ * it will return an empty list
  */
 const searchUsersController = asyncHandler(async (req, res) => {
   let { search } = req.query;
@@ -91,12 +91,7 @@ const searchUsersController = asyncHandler(async (req, res) => {
     throw new ChatterError(400, 'Search query is required');
   } else {
     // search for either username or email
-    searchQuery = {
-      $or: [
-        { username: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
-      ],
-    };
+    searchQuery = { username: { $regex: search, $options: 'i' } };
   }
 
   const users = await UserModel.find(

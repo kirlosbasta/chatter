@@ -7,6 +7,7 @@ import {
   createGroupController,
   addSelfToGroupController,
   leaveGroupController,
+  getGroupsController,
   deleteGroupChatController,
   removeUserFromGroupChatController,
   getGroupChatController,
@@ -22,6 +23,7 @@ router.post('/chats/:receiverId', getOrCreateChatController);
 router.get('/chats/:chatId', getChatByIdController);
 router.delete('/chats/:chatId', deleteChatController);
 router.post('/groups', createGroupController);
+router.get('/groups', getGroupsController);
 router.post('/groups/:groupId', addSelfToGroupController);
 router.delete('/groups/:groupId/leave', leaveGroupController);
 router.delete('/groups/:groupId', deleteGroupChatController);

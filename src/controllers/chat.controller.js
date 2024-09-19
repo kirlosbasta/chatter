@@ -219,7 +219,7 @@ const deleteChatController = asyncHandler(async (req, res) => {
     .status(200)
     .json({ success: true, message: 'Chat deleted successfuly' });
 });
-// create a group chat
+
 /**
  * @param {import('express').Request} req - request object
  * @param {import('express').Response} res - response object
@@ -500,10 +500,29 @@ const addUserToGroupChatController = asyncHandler(async (req, res) => {
   return res.status(200).json(payload);
 });
 
+/**
+ * @param {import('express').Request} req - request object
+ * @param {import('express').Response} res - response object
+ *
+ * @description - Get all group chats available
+ */
+const getGroupsController = asyncHandler(async (req, res) => {
+  const groups = await ChatModel.aggregate([
+    {
+      $match: {
+        isGroupChat: true,
+      },
+    },
+    ...populateChat,
+  ]);
+  return res.status(200).json(groups);
+});
+
 export {
   deleteChatController,
   leaveGroupController,
   createGroupController,
+  getGroupsController,
   getAllChatsController,
   getChatByIdController,
   getGroupChatController,
