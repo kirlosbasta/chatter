@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -7,7 +8,6 @@ import { IconButton } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
 import { userData } from '../utils/auth';
 import { config } from '../utils/axio.config';
-import axios from 'axios';
 import logo from '../assets/logo-no-background.png';
 import './styles.css';
 
@@ -16,6 +16,7 @@ function Users() {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState('');
   const [searchStatus, setSearchStatus] = useState(false);
+
   const navigate = useNavigate();
   useEffect(() => {
     if (!userData) {
@@ -52,7 +53,6 @@ function Users() {
         {},
         config,
       );
-      console.log(response.data)
       navigate(`/app/chat/${response.data?._id}`);
     } catch (error) {
       console.error(error);

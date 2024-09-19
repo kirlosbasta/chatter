@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import logo from '../assets/logo-no-background.png';
 import { useNavigate } from 'react-router-dom';
+import { userData } from '../utils/auth';
+import logo from '../assets/logo-no-background.png';
 
 function Welcome() {
-  const userData = JSON.parse(localStorage.getItem('userData'));
   const navigate = useNavigate();
 
   useEffect(() => {

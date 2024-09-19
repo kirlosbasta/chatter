@@ -9,6 +9,7 @@ import MessageOther from './MessageOther';
 import MessageSelf from './MessageSelf';
 import { config } from '../utils/axio.config';
 import { userData } from '../utils/auth';
+import { useSocket } from '../contexts/socket.context';
 import './styles.css';
 
 function ChatArea() {
@@ -16,12 +17,33 @@ function ChatArea() {
   const lightMode = useSelector((state) => state.themeKey);
   const [chat, setChat] = useState({});
   const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState('');
+  const [newMessage, setNewMessage] = useState('');
+  const { socket } = useSocket();
   const navigate = useNavigate();
   useEffect(() => {
     if (!userData) {
       navigate('/');
     }
-  });
+  }, []);
+  async function sendMessageHandler() {
+    if (message.trim() === '') return;
+    try {
+      await axios.post(
+        `http://localhost:5000/api/v1/messages/${chatId}`,
+        {
+          content: message,
+        },
+        config,
+      );
+      // reset the message input
+      setMessage('');
+      // to refresh the messages
+      getMessages(chatId);
+    } catch (error) {
+      console.error(error);
+    }
+  }
   async function getMessages(chatId) {
     try {
       const response = await axios.get(
@@ -50,8 +72,15 @@ function ChatArea() {
   useEffect(() => {
     getChatById();
     getMessages(chatId);
-    console.log('chatId', chatId);
-  }, [chatId]);
+    socket?.emit('join chat', chatId);
+    socket?.on('receive-message', (message) => {
+      setNewMessage(message);
+    });
+    return () => {
+      socket?.emit('leave chat', chatId);
+      socket?.off('receive-message');
+    }
+  }, [chatId, socket, newMessage]);
 
   async function deleteChatHandler() {
     try {
@@ -85,13 +114,16 @@ function ChatArea() {
         </IconButton>
       </div>
       <div className={'messages-container' + (!lightMode ? ' dark' : '')}>
+        {/* messages are coming in ascending order the first messages are rendered first
+        and lastest messages are appearing first which work fine for now
+        but later when the messages are enourmous that will be an issue  */}
         {messages.map((message) => {
           const time = new Date(message.createdAt);
           const timeFormatted = time.toLocaleString(
             {},
             { hour: '2-digit', minute: '2-digit', hour12: true },
           );
-          if (message.sender?._id === userData.id) {
+          if (message.sender?._id === userData._id) {
             return (
               <MessageSelf
                 key={message._id}
@@ -114,9 +146,24 @@ function ChatArea() {
         <input
           type="text"
           placeholder="Type a message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
           className={'search-box' + (!lightMode ? ' dark' : '')}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              sendMessageHandler();
+            }
+          }}
         />
-        <IconButton className={!lightMode ? 'pink' : ''}>
+        <IconButton
+          className={!lightMode ? 'pink' : ''}
+          onClick={sendMessageHandler}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              sendMessageHandler();
+            }
+          }}
+        >
           <SendIcon />
         </IconButton>
       </div>
