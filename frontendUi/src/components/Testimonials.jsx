@@ -8,7 +8,7 @@ const Testimonial = () => {
   return (
     <section id="testimonials">
       {/* Container to heading and testm blocks */}
-      <div className="max-w-6xl px-5 mx-auto mt-32 text-center">
+      <div className="max-w-6xl px-5 mx-auto mt-32 text-center my-16">
         {/* Heading */}
         <h2 className="text-4xl font-bold text-center">
           What People Say About Chatter?
@@ -47,15 +47,6 @@ const Testimonial = () => {
               everyone motivated.”
             </p>
           </div>
-        </div>
-        {/* Button */}
-        <div className="my-16">
-          <Link
-            to="#"
-            className="p-3 px-6 pt-2 text-white bg-brightRed rounded-full baseline hover:bg-brightRedLight"
-          >
-            Get Started
-          </Link>
         </div>
       </div>
     </section>
