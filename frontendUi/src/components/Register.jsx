@@ -25,7 +25,7 @@ function Register() {
         },
       };
       const response = await axios.post(
-        'http://localhost:5000/api/v1/register',
+        'http://localhost:8000/api/v1/register',
         data,
         config,
       );
@@ -66,10 +66,10 @@ function Register() {
           <h2 className="text-4xl dark:text-white font-bold text-center">
             Create a new account
           </h2>
-          <div className="flex flex-col text-gray-200 py-2">
+          <div className="flex flex-col text-darkBlue py-2">
             <label>Username</label>
             <input
-              className="rounded-lg bg-gray-200 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
+              className="rounded-lg bg-gray-200 mt-2 p-2 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
               type="text"
               id="username"
               label="Username"
@@ -83,15 +83,15 @@ function Register() {
               }}
             />
           </div>
-          <div className="flex flex-col text-gray-200 py-2">
+          <div className="flex flex-col text-darkBlue py-2">
             <label>Email</label>
             <input
-              className="rounded-lg bg-gray-200 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
+              className="rounded-lg bg-gray-200 mt-2 p-2 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
               type="text"
               id="email"
               label="Email"
               variant="outlined"
-              name="username"
+              name="email"
               onChange={changeHandler}
               onKeyDown={(e) => {
                 if (e.code === 'Enter') {
@@ -100,7 +100,7 @@ function Register() {
               }}
             />
           </div>
-          <div className="flex flex-col text-gray-200 py-2">
+          <div className="flex flex-col text-darkBlue py-2">
             <label>Password</label>
             <input
               id="outlined-password-input"
@@ -114,7 +114,7 @@ function Register() {
                   registerHandler();
                 }
               }}
-              className="p-2 rounded-lg bg-gray-200 mt-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
+              className="p-2 rounded-lg bg-gray-200 mt-2 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
             />
           </div>
           <div className="flex justify-between text-gray-200 py-2">
