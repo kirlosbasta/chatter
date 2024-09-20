@@ -23,10 +23,7 @@ const seedChats = async (n) => {
       name: faker.person.fullName(),
       isGroupChat: true,
       users: selectedUser,
-      lastMessage: await ChatMessageModel.create({
-        sender: selectedUser[faker.number.int(selectedUser.length)],
-        content: faker.lorem.sentence({ min: 5, max: 20 }),
-      }),
+
       admin: selectedUser[0],
     });
   }

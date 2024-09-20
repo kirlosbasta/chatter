@@ -1,20 +1,36 @@
-import { useEffect } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import { IconButton } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
+import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
+import { userData } from '../utils/auth';
+import { config } from '../utils/axio.config';
 import './styles.css';
 
 function CreateGroup() {
   const lightMode = useSelector((state) => state.themeKey);
-  const userData = JSON.parse(localStorage.getItem('userData'));
+  const [groupName, setGroupName] = useState('');
   const navigate = useNavigate();
   useEffect(() => {
     if (!userData) {
       navigate('/');
     }
   });
+  async function createGroupHandler() {
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/v1/groups`,
+        { name: groupName },
+        config,
+      );
+      navigate(`/app/chat/${response.data._id}`);
+      setGroupName('');
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return (
     <AnimatePresence>
       <motion.div
@@ -28,11 +44,19 @@ function CreateGroup() {
         className={'createGroup-container' + (!lightMode ? ' dark' : '')}
       >
         <input
-          type='text'
-          placeholder='Enter group name'
+          type="text"
+          placeholder="Enter group name"
+          value={groupName}
+          onChange={(e) => setGroupName(e.target.value)}
           className={'search-box' + (!lightMode ? ' dark' : '')}
         />
-        <IconButton className={!lightMode ? ' pink' : ''}>
+        <IconButton
+          className={!lightMode ? ' pink' : ''}
+          onClick={createGroupHandler}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') createGroupHandler;
+          }}
+        >
           <DoneOutlineIcon />
         </IconButton>
       </motion.div>

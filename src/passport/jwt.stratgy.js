@@ -31,6 +31,7 @@ passport.use(
   new JwtStratgy(options, async (payload, done) => {
     try {
       const user = await UserModel.findById(payload.id);
+
       if (!user) {
         throw new ChatterError(404, 'User not found');
       }
