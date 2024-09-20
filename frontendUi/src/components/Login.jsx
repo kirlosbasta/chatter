@@ -59,7 +59,7 @@ function Login() {
           <img src={logo} alt="Logo" className="welcome-logo" />
         </div>
         <div className={'login-box' + (!lightMode ? ' dark' : '')}>
-          <h1>Login to your account</h1>
+          <h1 className='header'>Login to your account</h1>
           <TextField
             id="username"
             label="Username"

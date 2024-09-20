@@ -1,0 +1,19 @@
+* {
+  margin: 0;
+}
+
+.app {
+  background-color: #dddedd;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-dark {
+  background-color: #1c2429;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -55,7 +55,7 @@ function Register() {
           <img src={logo} alt="Logo" className="welcome-logo" />
         </div>
         <div className="login-box">
-          <h1>Create a new account</h1>
+          <h1 className='header'>Create a new account</h1>
           <TextField
             onChange={changeHandler}
             id="username"
@@ -92,7 +92,7 @@ function Register() {
           </Button>
           <p>
             Already have an account? Login{' '}
-            <Link to=".." className="link">
+            <Link to="../login" className="link">
               here
             </Link>
           </p>

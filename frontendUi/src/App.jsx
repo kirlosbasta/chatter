@@ -15,7 +15,7 @@ import LandingPage from './components/LandingPage';
 function App() {
   const lightMode = useSelector((state) => state.themeKey);
   return (
-    <div className={'app' + (!lightMode ? ' blackish' : '')}>
+    <div className={!lightMode ? ' app-dark' : 'app'}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
