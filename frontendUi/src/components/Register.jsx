@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Backdrop, Button, CircularProgress, TextField } from '@mui/material';
 import logo from '../assets/logo-no-background.png';
 import Toaster from './Toaster';
+import { useAuth } from '../contexts/auth.context';
+import Axios from '../utils/axio.config';
 
 function Register() {
+  const { setUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({ username: '', email: '', password: '' });
   const [registerStatus, setRegisterStatus] = useState('');
-
+  const axios = new Axios();
   const navigate = useNavigate();
 
   function changeHandler(e) {
@@ -19,25 +21,19 @@ function Register() {
   async function registerHandler() {
     setLoading(true);
     try {
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-        },
-      };
-      const response = await axios.post(
-        'http://localhost:5000/api/v1/register',
-        data,
-        config,
-      );
+      const response = await axios.registerUser(data);
       console.log('Register : ', response);
       setRegisterStatus({ msg: 'Success', key: Math.random() });
-      navigate('/app/welcome');
       localStorage.setItem('userData', JSON.stringify(response.data));
-
+      setUser(response.data);
+      navigate('/app/welcome');
       setLoading(false);
     } catch (error) {
       console.error(error);
-      setRegisterStatus({ msg: error.response?.data?.message, key: Math.random() });
+      setRegisterStatus({
+        msg: error.response?.data?.message,
+        key: Math.random(),
+      });
       setLoading(false);
     }
   }
@@ -55,7 +51,7 @@ function Register() {
           <img src={logo} alt="Logo" className="welcome-logo" />
         </div>
         <div className="login-box">
-          <h1>Create a new account</h1>
+          <h1 className="header">Create a new account</h1>
           <TextField
             onChange={changeHandler}
             id="username"
@@ -92,7 +88,7 @@ function Register() {
           </Button>
           <p>
             Already have an account? Login{' '}
-            <Link to=".." className="link">
+            <Link to="../login" className="link">
               here
             </Link>
           </p>

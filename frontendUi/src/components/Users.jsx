@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -6,8 +5,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
-import { userData } from '../utils/auth';
-import { config } from '../utils/axio.config';
+import Axios from '../utils/axio.config';
 import logo from '../assets/logo-no-background.png';
 import './styles.css';
 
@@ -16,21 +14,14 @@ function Users() {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState('');
   const [searchStatus, setSearchStatus] = useState(false);
-
+  const axios = new Axios();
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!userData) {
-      navigate('/');
-    }
-  });
+
   // search for users
   const searchHandler = async () => {
     try {
       setSearchStatus(true);
-      const response = await axios.get(
-        `http://localhost:5000/api/v1/search/users`,
-        { params: { search }, ...config },
-      );
+      const response = await axios.searchUsers(search);
       setUsers(response.data);
     } catch (error) {
       setSearchStatus(false);
@@ -39,7 +30,7 @@ function Users() {
   };
   async function getUsers() {
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/users', config);
+      const res = await axios.getAvailableUsers();
       setUsers(res.data);
     } catch (e) {
       console.error(e);
@@ -48,11 +39,7 @@ function Users() {
   // get the chat or create one if doesn't exist
   async function getChatHandler(user) {
     try {
-      const response = await axios.post(
-        `http://localhost:5000/api/v1/chats/${user._id}`,
-        {},
-        config,
-      );
+      const response = await axios.getOrCreateUserChat(user._id);
       navigate(`/app/chat/${response.data?._id}`);
     } catch (error) {
       console.error(error);

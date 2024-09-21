@@ -11,20 +11,22 @@ export default function initSocket(io) {
     if (!user) {
       socket.emit('authentication error', 'Invalid Token');
       socket.disconnect(true);
+      return;
     }
+    console.log(user);
     // create a room for the user so that he can recieve other events
     // for future features like friend request, typing etc...
     socket.emit('connected');
-    console.log('user', user.username, 'is connected');
-    socket.join(user._id.toString());
+    console.log('user', user?.username, 'is connected');
+    socket.join(user?._id?.toString());
 
     socket.on('disconnect', () => {
       console.log('user disconnected');
-      socket.leave(user._id.toString());
+      socket.leave(user?._id?.toString());
     });
 
     socket.on('join chat', (chatId) => {
-      console.log('user', user.username, 'joined the chat 🤝. chatId: ', chatId);
+      console.log('user', user?.username, 'joined the chat 🤝. chatId: ', chatId);
       socket.join(chatId);
     });
 
