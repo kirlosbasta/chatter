@@ -1,16 +1,8 @@
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { userData } from '../utils/auth';
 import ConversationItem from './ConversationItem';
 
 function Conversations({ conversations }) {
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!userData) {
-      navigate('/');
-    }
-  });
+  
   const lightMode = useSelector((state) => state.themeKey);
 
   return (

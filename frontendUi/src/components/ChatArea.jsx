@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -7,9 +6,9 @@ import SendIcon from '@mui/icons-material/Send';
 import { IconButton } from '@mui/material';
 import MessageOther from './MessageOther';
 import MessageSelf from './MessageSelf';
-import { config } from '../utils/axio.config';
-import { userData } from '../utils/auth';
 import { useSocket } from '../contexts/socket.context';
+import { useAuth } from '../contexts/auth.context';
+import Axios from '../utils/axio.config';
 import './styles.css';
 
 function ChatArea() {
@@ -19,24 +18,17 @@ function ChatArea() {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [newMessage, setNewMessage] = useState('');
-  const { socket } = useSocket();
-  const navigate = useNavigate();
   const [chatName, setChatName] = useState('');
-  useEffect(() => {
-    if (!userData) {
-      navigate('/');
-    }
-  }, []);
+  const navigate = useNavigate();
+  const { socket } = useSocket();
+  const { user: userData } = useAuth();
+  const axios = new Axios();
+
   async function sendMessageHandler() {
     if (message.trim() === '') return;
     try {
-      await axios.post(
-        `http://localhost:5000/api/v1/messages/${chatId}`,
-        {
-          content: message,
-        },
-        config,
-      );
+      const res = await axios.sendMessage(chatId, { content: message });
+      console.log(res);
       // reset the message input
       setMessage('');
       // to refresh the messages
@@ -47,10 +39,8 @@ function ChatArea() {
   }
   async function getMessages(chatId) {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/v1/messages/${chatId}`,
-        config,
-      );
+      const response = await axios.getChatMessages(chatId);
+
       // console.log(response.data);
       setMessages(response.data);
     } catch (error) {
@@ -60,12 +50,9 @@ function ChatArea() {
   // retrieve a chat by the id from url
   async function getChatById() {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/v1/chats/${chatId}`,
-        config,
-      );
-      // console.log(response.data);
+      const response = await axios.getChatById(chatId);
 
+      // console.log(response.data);
       setChat(response.data);
     } catch (error) {
       console.error(error);
@@ -77,7 +64,7 @@ function ChatArea() {
     getMessages(chatId);
     socket?.emit('join chat', chatId);
     socket?.on('receive-message', (message) => {
-      setNewMessage(message);
+      setNewMessage({ content: message });
     });
 
     return () => {
@@ -90,7 +77,6 @@ function ChatArea() {
     if (chat.isGroupChat) {
       setChatName(chat.name);
     } else {
-      console.log('inside else');
       const otherUser = chat.users?.find((user) => user._id !== userData._id);
       setChatName(otherUser?.username);
     }
@@ -98,13 +84,13 @@ function ChatArea() {
 
   async function deleteChatHandler() {
     try {
-      let url = chat.isGroupChat
-        ? `http://localhost:5000/api/v1/groups/${chatId}/leave`
-        : `http://localhost:5000/api/v1/chats/${chatId}`;
       if (chat.isGroupChat && chat.admin === userData._id) {
-        url = `http://localhost:5000/api/v1/groups/${chatId}`;
+        await axios.deleteGroup(chatId);
+      } else if (chat.isGroupChat) {
+        await axios.leaveGroup(chatId);
+      } else {
+        await axios.deleteOneOnOneChat(chatId);
       }
-      await axios.delete(url, config);
       setChat({});
       navigate('../welcome');
     } catch (error) {

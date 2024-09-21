@@ -5,9 +5,8 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
-import { userData } from '../utils/auth';
-import { config } from '../utils/axio.config';
-import axios from 'axios';
+import Axios from '../utils/axio.config';
+import { useAuth } from '../contexts/auth.context';
 import logo from '../assets/logo-no-background.png';
 import './styles.css';
 
@@ -17,19 +16,14 @@ function Groups() {
   const [search, setSearch] = useState('');
   const [searchStatus, setSearchStatus] = useState(false);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!userData) {
-      navigate('/');
-    }
-  });
+  const { user } = useAuth();
+  const axios = new Axios();
+
   // search for groups
   const searchHandler = async () => {
     try {
       setSearchStatus(true);
-      const response = await axios.get(
-        `http://localhost:5000/api/v1/search/groups`,
-        { params: { search }, ...config },
-      );
+      const response = await axios.searchGroups(search);
       setGroups(response.data);
     } catch (error) {
       setSearchStatus(false);
@@ -38,10 +32,7 @@ function Groups() {
   };
   async function getGroups() {
     try {
-      const res = await axios.get(
-        'http://localhost:5000/api/v1/groups',
-        config,
-      );
+      const res = await axios.getAllGroups();
       setGroups(res.data);
     } catch (e) {
       console.error(e);
@@ -52,13 +43,13 @@ function Groups() {
     try {
       const url = `http://localhost:5000/api/v1/groups/${group._id}`;
       let res;
-      const isPartOfGroup = group.users.filter((user) => {
-        return user._id === userData._id;
+      const isPartOfGroup = group.users.filter((User) => {
+        return User._id === user._id;
       });
       if (isPartOfGroup.length === 0) {
-        res = await axios.post(url, {}, config);
+        res = await axios.joinGroup(group._id);
       } else {
-        res = await axios.get(url, config);
+        res = await axios.getChatById(group._id);
       }
       navigate(`/app/chat/${res.data?._id}`);
     } catch (error) {

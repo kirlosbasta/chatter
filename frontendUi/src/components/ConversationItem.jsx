@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { userData } from '../utils/auth';
+import { useAuth } from '../contexts/auth.context';
 import './styles.css';
 
 function ConversationItem({ props }) {
   const navigate = useNavigate();
+  const { user: userData } = useAuth();
   const date = new Date(props.updatedAt);
   const lightMode = useSelector((state) => state.themeKey);
   let name = props.name;
@@ -33,9 +34,7 @@ function ConversationItem({ props }) {
       }}
     >
       <p className="con-icon">{name[0]}</p>
-      <p className={'con-name' + (!lightMode ? ' dark' : '')}>
-        {name}
-      </p>
+      <p className={'con-name' + (!lightMode ? ' dark' : '')}>{name}</p>
       <p className="con-lastMessage">{content}</p>
       <p className={'con-timeStamp' + (!lightMode ? ' dark' : '')}>
         {dateFormatted}

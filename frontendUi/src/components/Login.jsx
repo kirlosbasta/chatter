@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Backdrop, Button, CircularProgress, TextField } from '@mui/material';
 import logo from '../assets/logo-no-background.png';
+import { useAuth } from '../contexts/auth.context';
+import Axios from '../utils/axio.config';
 import Toaster from './Toaster';
 
 function Login() {
@@ -11,6 +12,8 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({ username: '', password: '' });
   const [loginStatus, setLoginStatus] = useState('');
+  const { setUser } = useAuth();
+  const axios = new Axios();
 
   const navigate = useNavigate();
 
@@ -21,19 +24,11 @@ function Login() {
   async function loginHandler() {
     setLoading(true);
     try {
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-        },
-      };
-      const response = await axios.post(
-        'http://localhost:5000/api/v1/login',
-        data,
-        config,
-      );
+      const response = await axios.loginUser(data);
       setLoginStatus({ msg: 'Success', key: Math.random() });
-      navigate('/app/welcome');
       localStorage.setItem('userData', JSON.stringify(response.data));
+      setUser(response.data);
+      navigate('/app/welcome');
 
       setLoading(false);
     } catch (error) {
@@ -59,7 +54,7 @@ function Login() {
           <img src={logo} alt="Logo" className="welcome-logo" />
         </div>
         <div className={'login-box' + (!lightMode ? ' dark' : '')}>
-          <h1 className='header'>Login to your account</h1>
+          <h1 className="header">Login to your account</h1>
           <TextField
             id="username"
             label="Username"

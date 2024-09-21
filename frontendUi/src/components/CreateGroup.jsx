@@ -1,30 +1,21 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
-import { userData } from '../utils/auth';
-import { config } from '../utils/axio.config';
+import Axios from '../utils/axio.config';
 import './styles.css';
 
 function CreateGroup() {
   const lightMode = useSelector((state) => state.themeKey);
   const [groupName, setGroupName] = useState('');
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!userData) {
-      navigate('/');
-    }
-  });
+  const axios = new Axios();
+
   async function createGroupHandler() {
     try {
-      const response = await axios.post(
-        `http://localhost:5000/api/v1/groups`,
-        { name: groupName },
-        config,
-      );
+      const response = await axios.createGroupChat({ name: groupName });
       navigate(`/app/chat/${response.data._id}`);
       setGroupName('');
     } catch (error) {

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
@@ -15,7 +14,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTheme } from '../Features/themeSlice';
 import Conversations from './Conversations';
-import { config } from '../utils/axio.config';
+import { useAuth } from '../contexts/auth.context';
+import Axios from '../utils/axio.config';
 import './styles.css';
 
 function SideBar() {
@@ -25,10 +25,13 @@ function SideBar() {
   const [searchStatus, setSearchStatus] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { setUser} = useAuth();
+  const axios = new Axios();
 
   // Function to handle logout
   const logoutHandler = () => {
     localStorage.removeItem('userData');
+    setUser(null);
     navigate('/');
   };
 
@@ -36,10 +39,7 @@ function SideBar() {
   const searchHandler = async () => {
     try {
       setSearchStatus(true);
-      const response = await axios.get(
-        `http://localhost:5000/api/v1/search/chats`,
-        { params: { search }, ...config },
-      );
+      const response = await axios.searchChats(search);
       setConversations(response.data);
     } catch (error) {
       setSearchStatus(false);
@@ -49,10 +49,8 @@ function SideBar() {
   // fetch all user conversations
   async function getConversations() {
     try {
-      const response = await axios.get(
-        'http://localhost:5000/api/v1/chats',
-        config,
-      );
+      const response = await axios.getUserChats();
+      console.log('Conversations : ', response);
       setConversations(response.data);
     } catch (error) {
       console.error(error);
@@ -60,6 +58,7 @@ function SideBar() {
   }
   useEffect(() => {
     getConversations();
+    console.log('Conversations : ', conversations);
   }, [searchStatus]);
   return (
     <div className="sidebar-container">
