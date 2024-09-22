@@ -13,6 +13,7 @@ import { IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTheme } from '../Features/themeSlice';
+import { setConversations } from '../Features/conversations';
 import Conversations from './Conversations';
 import { useAuth } from '../contexts/auth.context';
 import Axios from '../utils/axio.config';
@@ -20,7 +21,7 @@ import './styles.css';
 
 function SideBar() {
   const lightMode = useSelector((state) => state.themeKey);
-  const [conversations, setConversations] = useState([]);
+  const conversations = useSelector((state) => state.conversations);
   const [search, setSearch] = useState('');
   const [searchStatus, setSearchStatus] = useState(false);
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ function SideBar() {
     try {
       setSearchStatus(true);
       const response = await axios.searchChats(search);
-      setConversations(response.data);
+      dispatch(setConversations(response.data));
     } catch (error) {
       setSearchStatus(false);
       console.error(error);
@@ -50,15 +51,13 @@ function SideBar() {
   async function getConversations() {
     try {
       const response = await axios.getUserChats();
-      console.log('Conversations : ', response);
-      setConversations(response.data);
+      dispatch(setConversations(response.data));
     } catch (error) {
       console.error(error);
     }
   }
   useEffect(() => {
     getConversations();
-    console.log('Conversations : ', conversations);
   }, [searchStatus]);
   return (
     <div className="sidebar-container">
@@ -114,7 +113,7 @@ function SideBar() {
           <CancelIcon className={'icon' + (!lightMode ? ' dark' : '')} />
         </IconButton>
       </div>
-      <Conversations conversations={conversations} />
+      <Conversations />
     </div>
   );
 }

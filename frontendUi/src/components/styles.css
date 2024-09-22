@@ -74,11 +74,11 @@
   padding: 5px;
   padding-left: 10px;
   border-radius: 20px;
-  transition-duration: 0.5s;
+  /* transition-duration: 0.5s; */
 }
 
 .conversations-item:hover {
-  background-color: rgb(226, 226, 226);
+  background-color: rgb(222, 222, 222);
 }
 
 .conversations-item:active {
@@ -123,7 +123,6 @@
   justify-self: flex-end;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 0.75rem;
-  color: rgba(0, 0, 0, 0.54);
 }
 
 /* ============================= Chat Area Container ==================== */
@@ -359,8 +358,8 @@
 
 /* ================================ Dark theme colors ========================== */
 .dark {
-  color: white !important;
-  background-color: rgb(60, 60, 60) !important;
+  color: white;
+  background-color: rgb(60, 60, 60);
 }
 
 .grey {
@@ -383,12 +382,10 @@
   height: 1.25em !important;
 }
 
-.conversations-item:hover.dark {
-  background-color: rgba(105, 105, 105, 0.404) !important;
-}
-
-.conversations-item:active.dark {
-  background-color: rgb(60, 60, 60);
+.conversations-item:hover.dark,
+.conversations-item:hover .con-name.dark,
+.conversations-item:hover .con-timeStamp.dark {
+  background-color: rgb(72, 72, 72) !important;
 }
 
 /* =================================== Responsive media query =========================== */
