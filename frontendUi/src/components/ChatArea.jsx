@@ -159,7 +159,7 @@ function ChatArea() {
           }}
         />
         <IconButton
-          className={!lightMode ? 'pink' : ''}
+          className={!lightMode ? 'blue' : ''}
           onClick={sendMessageHandler}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {

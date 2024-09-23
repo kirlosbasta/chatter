@@ -5,6 +5,8 @@
   width: 90vw;
   background-color: #d4d5d9;
   border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
 }
 
 /* ============================ Side Bar Container ======================= */
@@ -65,6 +67,9 @@
   display: none;
 }
 
+.sb-conversations .sb-search {
+  display: none;
+}
 .conversations-item {
   display: grid;
   grid-template-columns: 32px auto auto;
@@ -74,7 +79,6 @@
   padding: 5px;
   padding-left: 10px;
   border-radius: 20px;
-  /* transition-duration: 0.5s; */
 }
 
 .conversations-item:hover {
@@ -162,20 +166,24 @@
   margin: 10px;
   border-radius: 20px;
   overflow: scroll;
-  scrollbar-width: none;
+  /* scrollbar-width: none; */
   font-size: 1rem;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-.messages-container::-webkit-scrollbar {
+/* .messages-container::-webkit-scrollbar {
   display: none;
-}
+} */
 
 .other-message-container {
   display: flex;
   justify-content: flex-start;
 }
 
+.other-message-container .conversations-item:hover,
+.other-message-container .conversations-item:hover.dark{
+  background-color: rgb(60, 60, 60) !important;
+}
 .self-message-container {
   display: flex;
   justify-content: flex-end;
@@ -358,8 +366,8 @@
 
 /* ================================ Dark theme colors ========================== */
 .dark {
-  color: white;
-  background-color: rgb(60, 60, 60);
+  color: white !important;
+  background-color: rgb(60, 60, 60) !important;
 }
 
 .grey {
@@ -377,6 +385,10 @@
   background-color: rgb(255, 64, 129) !important;
 }
 
+.blue {
+  color: white !important;
+  background-color: #1976d2 !important;
+}
 .icon {
   width: 1.25em !important;
   height: 1.25em !important;
@@ -401,6 +413,11 @@
     flex: 1;
     width: min-content;
     justify-content: space-evenly;
+  }
+
+  .sb-conversations .sb-search {
+    display: flex;
+    margin-bottom: 20px;
   }
 
   .sidebar-container {
