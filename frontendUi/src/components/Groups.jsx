@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
 import Axios from '../utils/axio.config';
 import { useAuth } from '../contexts/auth.context';
+import { addConversation } from '../Features/conversations';
 import logo from '../assets/logo-no-background.png';
 import './styles.css';
 
@@ -17,6 +18,7 @@ function Groups() {
   const [searchStatus, setSearchStatus] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const dispatch = useDispatch();
   const axios = new Axios();
 
   // search for groups
@@ -41,7 +43,6 @@ function Groups() {
   // get the group or join
   async function getGroupHandler(group) {
     try {
-      const url = `http://localhost:5000/api/v1/groups/${group._id}`;
       let res;
       const isPartOfGroup = group.users.filter((User) => {
         return User._id === user._id;
@@ -51,6 +52,7 @@ function Groups() {
       } else {
         res = await axios.getChatById(group._id);
       }
+      dispatch(addConversation(res.data));
       navigate(`/app/chat/${res.data?._id}`);
     } catch (error) {
       console.error(error);

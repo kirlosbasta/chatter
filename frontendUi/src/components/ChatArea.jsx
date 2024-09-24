@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
@@ -9,17 +9,20 @@ import MessageSelf from './MessageSelf';
 import { useSocket } from '../contexts/socket.context';
 import { useAuth } from '../contexts/auth.context';
 import Axios from '../utils/axio.config';
+import { deleteConversation } from '../Features/conversations';
 import './styles.css';
 
 function ChatArea() {
   const { chatId } = useParams();
   const lightMode = useSelector((state) => state.themeKey);
+  const conversations = useSelector((state) => state.conversations);
   const [chat, setChat] = useState({});
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [newMessage, setNewMessage] = useState('');
   const [chatName, setChatName] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { socket } = useSocket();
   const { user: userData } = useAuth();
   const axios = new Axios();
@@ -38,6 +41,7 @@ function ChatArea() {
     }
   }
   async function getMessages(chatId) {
+    console.log('coversations :', conversations);
     try {
       const response = await axios.getChatMessages(chatId);
 
@@ -92,6 +96,7 @@ function ChatArea() {
         await axios.deleteOneOnOneChat(chatId);
       }
       setChat({});
+      dispatch(deleteConversation(chatId));
       navigate('../welcome');
     } catch (error) {
       console.error(error);
@@ -154,7 +159,7 @@ function ChatArea() {
           }}
         />
         <IconButton
-          className={!lightMode ? 'pink' : ''}
+          className={!lightMode ? 'blue' : ''}
           onClick={sendMessageHandler}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {

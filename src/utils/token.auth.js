@@ -22,7 +22,7 @@ const authenticateUser = async (token) => {
     return user;
   } catch (error) {
     console.log('error', error);
-    throw new ChatterError(401, 'Authentication failed');
+    return null;
   }
 };
 

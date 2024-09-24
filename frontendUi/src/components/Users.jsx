@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
 import Axios from '../utils/axio.config';
 import logo from '../assets/logo-no-background.png';
+import { addConversation } from '../Features/conversations';
 import './styles.css';
 
 function Users() {
@@ -15,6 +16,7 @@ function Users() {
   const [search, setSearch] = useState('');
   const [searchStatus, setSearchStatus] = useState(false);
   const axios = new Axios();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // search for users
@@ -40,6 +42,7 @@ function Users() {
   async function getChatHandler(user) {
     try {
       const response = await axios.getOrCreateUserChat(user._id);
+      dispatch(addConversation(response.data));
       navigate(`/app/chat/${response.data?._id}`);
     } catch (error) {
       console.error(error);
