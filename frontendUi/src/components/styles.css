@@ -166,24 +166,28 @@
   margin: 10px;
   border-radius: 20px;
   overflow: scroll;
-  /* scrollbar-width: none; */
+  scrollbar-width: none;
   font-size: 1rem;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-/* .messages-container::-webkit-scrollbar {
+.messages-container::-webkit-scrollbar {
   display: none;
-} */
+}
 
 .other-message-container {
   display: flex;
   justify-content: flex-start;
 }
 
-.other-message-container .conversations-item:hover,
 .other-message-container .conversations-item:hover.dark{
   background-color: rgb(60, 60, 60) !important;
 }
+
+.other-message-container .conversations-item:hover {
+  background-color: rgb(255, 253, 253);
+}
+
 .self-message-container {
   display: flex;
   justify-content: flex-end;
