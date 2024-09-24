@@ -17,8 +17,6 @@ chat and experience the joy of every conversation with Chatter.
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 - [Contact](#contact)
 
 ## Installation
